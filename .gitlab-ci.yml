@@ -4,8 +4,8 @@ stages:
 Pipeline Scan Static Analysis:
     image: veracode/pipeline-scan:latest
     stage: Pipeline_Scan
-    only:
-        - development
+    # only:
+    #     - development
     script:
         - zip nodegoat.zip .
         - java -jar /opt/veracode/pipeline-scan.jar -vid ${VERACODE_API_ID} -vkey ${VERACODE_API_KEY} --file nodegoat.zip --issue_details true --gl_issue_generation true -jf results.json 2>&1 | tee pipeline_scan_text_output.txt

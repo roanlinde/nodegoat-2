@@ -9,8 +9,8 @@ Sandbox Scan Static Analysis:
     script:
         - zip -r nodegoat.zip ./
         - java -jar /opt/veracode/api-wrapper.jar 
-         -vid ${VERACODE_API_ID} 
-         -vkey ${VERACODE_API_KEY}
+         -vid f83665378cd78c0759b315db69353079 
+         -vkey ee13e416a3dd97073c3bd9c060225fc983946d119abb8dd919336268cbae19e31e605498be87785627d2e69a8d1c31595b51ddbbc97035caafdc79c27546cf0c
          -action UploadAndScan 
          -appname "nodegoat" 
          -createprofile false 

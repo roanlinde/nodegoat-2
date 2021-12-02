@@ -1,6 +1,5 @@
 stages:
     - Pipeline_Scan
-    - Sandbox_Scan
     - Policy_Scan
 
 Pipeline Scan Static Analysis:

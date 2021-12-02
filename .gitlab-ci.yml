@@ -26,32 +26,6 @@ Pipeline Scan Static Analysis:
     allow_failure: false
 
 
-
-Sandbox Scan Static Analysis:
-    image: veracode/api-wrapper-java:latest
-    stage: Sandbox_Scan
-    only:
-        - veracode-fix-20211130-154648.709
-    script:
-        - zip -r nodegoat.zip ./
-        - java -jar /opt/veracode/api-wrapper.jar 
-         -vid ${VERACODE_API_ID} 
-         -vkey ${VERACODE_API_KEY}
-         -action UploadAndScan 
-         -appname "nodegoat" 
-         -createprofile false 
-         -autoscan true 
-         -sandboxname "gitlab-release" 
-         -createsandbox true
-         -filepath ./target/verademo.war 
-         -version "Job ${CI_JOB_ID} in pipeline ${CI_PIPELINE_ID}" 2>&1 | tee sandbox_scan_output.txt
-    artifacts:
-        paths:
-            - sandbox_scan_output.txt
-        when: always
-        name: "veracode-SANDBOX-SCAN-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
-    allow_failure: true
-
 Policy Scan Static Analysis:
     image: veracode/api-wrapper-java
     stage: Policy_Scan

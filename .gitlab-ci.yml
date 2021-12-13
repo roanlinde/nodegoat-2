@@ -6,7 +6,7 @@ Pipeline Scan Static Analysis:
     image: veracode/pipeline-scan:latest
     stage: Pipeline_Scan
     # only:
-    #     - development
+    #     - developent
     script:
         - zip -r nodegoat.zip ./
         - java -jar /opt/veracode/pipeline-scan.jar 

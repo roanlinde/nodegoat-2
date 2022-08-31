@@ -22,7 +22,7 @@ Pipeline Scan Static Analysis:
             - pipeline_scan_text_output.txt
         when: always
         name: "veracode-pipeline-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
-    allow_failure: false
+    allow_failure: true
 
 
 Policy Scan Static Analysis:

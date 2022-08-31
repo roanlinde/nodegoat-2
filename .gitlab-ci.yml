@@ -28,8 +28,8 @@ Pipeline Scan Static Analysis:
 Pipeline Scan with Policy:
     image: openjdk:11-jre
     stage: Pipeline_Scan_with_Policy
-    only:
-        - development
+    # only:
+    #     - development
     before_script:
         - curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
         - unzip pipeline-scan-LATEST.zip
@@ -39,7 +39,7 @@ Pipeline Scan with Policy:
         - java -jar pipeline-scan.jar -vid ${VERACODE_API_ID} -vkey ${VERACODE_API_KEY} --file nodegoat.zip -pf nodegoat.json
     artifacts:
         paths:
-            - results.json
+            - pipeline_with_policy_results.json
     allow_failure: true
 
 

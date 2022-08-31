@@ -1,5 +1,6 @@
 stages:
     - Pipeline_Scan
+    - Pipeline_Scan_with_Policy
     - Policy_Scan
 
 Pipeline Scan Static Analysis:
@@ -22,6 +23,23 @@ Pipeline Scan Static Analysis:
             - pipeline_scan_text_output.txt
         when: always
         name: "veracode-pipeline-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
+    allow_failure: true
+
+Pipeline Scan with Policy:
+    image: openjdk:11-jre
+    stage: Pipeline_Scan_with_Policy
+    only:
+        - development
+    before_script:
+        - curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+        - unzip pipeline-scan-LATEST.zip
+    script:
+        - zip -r nodegoat.zip ./
+        - java -jar pipeline-scan.jar -vid ${VERACODE_API_ID} -vkey ${VERACODE_API_KEY} --request_policy "nodegoat"
+        - java -jar pipeline-scan.jar -vid ${VERACODE_API_ID} -vkey ${VERACODE_API_KEY} --file nodegoat.zip -pf nodegoat.json
+    artifacts:
+        paths:
+            - results.json
     allow_failure: true
 
 

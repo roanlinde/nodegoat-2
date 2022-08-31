@@ -47,7 +47,6 @@ Pipeline Scan Staic Analysis with Policy:
           --gl_issue_generation false
           --gl_vulnerability_generation false 
           --policy_file nodegoat.json 
-        #   --baseline_file pipeline-basline.json 
           --json_output_file results.json 2>&1 | tee pipeline_scan_text_output.txt
     artifacts:
         reports: 

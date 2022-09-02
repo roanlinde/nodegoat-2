@@ -2,7 +2,7 @@ stages:
     - Pipeline_Scan
     - Pipeline_Scan_with_Policy
     - Policy_Scan
-# testing
+
 Pipeline Scan Static Analysis:
     image: veracode/pipeline-scan:latest
     stage: Pipeline_Scan

@@ -1,4 +1,4 @@
-name: Veracode Static Analysis Pipeline Scan
+name: Pipeline and Issue Generation
 
 on:
   push:
@@ -55,7 +55,7 @@ jobs:
           name: filtered-results
 
       - name: import flaws as issues
-        uses: buzzcode/veracode-flaws-to-issues@v1
+        uses: veracode/veracode-flaws-to-issues@v1
         with:
           scan-results-json: 'filtered_results.json'
           github-token: ${{ secrets.GITHUB_TOKEN }}

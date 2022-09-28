@@ -55,7 +55,7 @@ jobs:
           name: filtered-results
 
       - name: import flaws as issues
-        uses: veracode/veracode-flaws-to-issues@v1
+        uses: veracode/veracode-flaws-to-issues@v1.0.0
         with:
           scan-results-json: 'filtered_results.json'
           github-token: ${{ secrets.GITHUB_TOKEN }}

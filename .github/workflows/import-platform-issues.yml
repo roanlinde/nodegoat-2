@@ -3,8 +3,10 @@
 name: Import Platform Issues
 
 # on: [push, pull_request, workflow_dispatch]
-on: gollum          # sort of a dummy to prevent this from running
-
+# on: gollum          # sort of a dummy to prevent this from running
+on:
+  push:
+    branches: [ "main" ]
 jobs:
   get-policy-flaws:
     runs-on: ubuntu-latest

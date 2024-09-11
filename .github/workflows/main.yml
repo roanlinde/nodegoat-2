@@ -1,0 +1,63 @@
+name: Package, Pipeline Scan and Issue Generation
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main" ]
+
+jobs:
+  # This workflow contains a job to build and submit pipeline scan, you will need to customize the build process accordingly and make sure the artifact you build is used as the file input to the pipeline scan file parameter
+  build-and-pipeline-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: zip -r veracode-scan-target.zip ./
+
+    - name: pipeline-scan action step
+      id: pipeline-scan
+      uses: veracode/Veracode-pipeline-scan-action@v1.0.16
+      with:
+        vid: ${{ secrets.VID }}
+        vkey: ${{ secrets.VKEY }}
+        file: "veracode-scan-target.zip" 
+        fail_build: false
+        filtered_json_output_file: "filtered_results.json"
+
+    - name: save filtered results file
+      uses: actions/upload-artifact@v2
+      with:
+        name: filtered-results
+        path: filtered_results.json
+        
+  import-issues:
+    needs: build-and-pipeline-scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: get scan results
+        uses: actions/download-artifact@v2
+        with:
+          name: filtered-results
+
+      - name: import flaws as issues
+        uses: veracode/veracode-flaws-to-issues@v2.1.0
+        with:
+          scan-results-json: 'filtered_results.json'
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  results_to_sarif:
+    runs-on: ubuntu-latest
+    name: import pipeline results to sarif
+    steps:
+      - name: Get scan results
+        uses: actions/download-artifact@v3
+        with:
+          name: "Veracode Pipeline-Scan Results"
+      - name: Convert pipeline scan output to SARIF format
+        id: convert
+        uses: veracode/veracode-pipeline-scan-results-to-sarif@v2.0.3
+        with:
+          results-json: filtered_results.json
+          output-results-sarif: veracode-results.sarif
+          githubToken: ${{ secrets.GITHUB_TOKEN }}  

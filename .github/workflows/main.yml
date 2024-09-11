@@ -26,7 +26,7 @@ jobs:
         filtered_json_output_file: "filtered_results.json"
 
     - name: save filtered results file
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: filtered-results
         path: filtered_results.json
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: get scan results
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: filtered-results
 
@@ -47,6 +47,7 @@ jobs:
 #           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   results_to_sarif:
+    needs: build-and-pipeline-scan
     runs-on: ubuntu-latest
     name: import pipeline results to sarif
     steps:
